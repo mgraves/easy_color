@@ -45,6 +45,7 @@
 //! let hex:Hex = "#2bc48a".try_into().unwrap();
 //! let hex_str = hex.to_rgb().set_blue(255).to_hsl().set_lightness(50).to_cmyk().set_cyan(100).to_hex().to_string(); // #00B5FF
 //! ```
+
 mod cmyk;
 mod common;
 mod hex;

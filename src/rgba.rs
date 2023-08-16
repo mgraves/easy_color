@@ -248,9 +248,9 @@ impl RGBA {
         Self { rgb, a: self.a }
     }
 
-    pub fn random() -> Self {
-        let rgb = RGB::random();
-        let a = (rand::random::<f32>() * 100.0_f32).round() / 100.0;
-        Self { rgb, a }
-    }
+    // pub fn random() -> Self {
+    //     let rgb = RGB::random();
+    //     let a = (rand::random::<f32>() * 100.0_f32).round() / 100.0;
+    //     Self { rgb, a }
+    // }
 }

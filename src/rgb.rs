@@ -156,10 +156,10 @@ impl RGB {
         !self.is_dark()
     }
 
-    pub fn random() -> Self {
-        let r = rand::random::<u8>();
-        let g = rand::random::<u8>();
-        let b = rand::random::<u8>();
-        Self { r, g, b }
-    }
+    // pub fn random() -> Self {
+    //     let r = rand::random::<u8>();
+    //     let g = rand::random::<u8>();
+    //     let b = rand::random::<u8>();
+    //     Self { r, g, b }
+    // }
 }

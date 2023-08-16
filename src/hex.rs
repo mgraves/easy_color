@@ -154,8 +154,8 @@ impl Hex {
         format!("#{:02X}{:02X}{:02X}{:02X}", (a * 255.0) as u8, r, g, b)
     }
 
-    pub fn random() -> Self {
-        let rgba = RGBA::random();
-        rgba.into()
-    }
+    // pub fn random() -> Self {
+    //     let rgba = RGBA::random();
+    //     rgba.into()
+    // }
 }

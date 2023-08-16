@@ -9,4 +9,4 @@ description = "A very simple and easy-to-use color conversion tool"
 repository = "https://github.com/zjhsd2007/easy_color"
 
 [dependencies]
-rand = "0.8"
+#rand = "0.8"

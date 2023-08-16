@@ -1,6 +1,6 @@
 use crate::common::{calc_rgb_with_alpha, rgb_to_cmyk};
 use crate::{ColorError, Hex, HSL, HSLA, HSV, RGB, RGBA};
-use rand::Rng;
+// use rand::Rng;
 use std::fmt::{Display, Formatter};
 
 /// CMYK can be parsed from a string in the format "cmyk(c,m,y,k)" or from a tuple (c,m,y,k).
@@ -21,154 +21,157 @@ use std::fmt::{Display, Formatter};
 /// ```
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
 pub struct CMYK {
-    pub(crate) c: u8,
-    pub(crate) m: u8,
-    pub(crate) y: u8,
-    pub(crate) k: u8,
+  pub(crate) c: u8,
+  pub(crate) m: u8,
+  pub(crate) y: u8,
+  pub(crate) k: u8,
 }
 
 impl TryFrom<&str> for CMYK {
-    type Error = ColorError;
-    fn try_from(cmyk_str: &str) -> Result<Self, Self::Error> {
-        let mut color = cmyk_str.trim().to_lowercase();
-        if color.starts_with("cmyk(") && color.ends_with(')') {
-            color = color.replace("cmyk(", "").replace(')', "");
-            let tmp = color.split(',').collect::<Vec<_>>();
-            if tmp.len() == 4 {
-                let val = tmp
-                    .iter()
-                    .filter_map(|s| s.parse::<u8>().ok())
-                    .collect::<Vec<_>>();
-                if val.len() == 4 {
-                    return (val[0], val[1], val[2], val[3]).try_into();
-                }
-            }
+  type Error = ColorError;
+  fn try_from(cmyk_str: &str) -> Result<Self, Self::Error> {
+    let mut color = cmyk_str.trim().to_lowercase();
+    if color.starts_with("cmyk(") && color.ends_with(')') {
+      color = color.replace("cmyk(", "").replace(')', "");
+      let tmp = color.split(',').collect::<Vec<_>>();
+      if tmp.len() == 4 {
+        let val = tmp
+          .iter()
+          .filter_map(|s| s.parse::<u8>().ok())
+          .collect::<Vec<_>>();
+        if val.len() == 4 {
+          return (val[0], val[1], val[2], val[3]).try_into();
         }
-        Err(ColorError::FormatErr(format!(
-            "CMYK: {} format error!",
-            cmyk_str
-        )))
+      }
     }
+    Err(ColorError::FormatErr(format!(
+      "CMYK: {} format error!",
+      cmyk_str
+    )))
+  }
 }
 
 impl TryFrom<(u8, u8, u8, u8)> for CMYK {
-    type Error = ColorError;
-    fn try_from(value: (u8, u8, u8, u8)) -> Result<Self, Self::Error> {
-        if !(0..=100).contains(&value.0)
-            || !(0..=100).contains(&value.1)
-            || !(0..=100).contains(&value.2)
-            || !(0..=100).contains(&value.3)
-        {
-            Err(ColorError::ValueErr(format!(
-                "CMYK: args ({},{},{},{}) value error. all value must between 0~100",
-                value.0, value.1, value.2, value.3
-            )))
-        } else {
-            Ok(Self {
-                c: value.0,
-                m: value.1,
-                y: value.2,
-                k: value.3,
-            })
-        }
+  type Error = ColorError;
+  fn try_from(value: (u8, u8, u8, u8)) -> Result<Self, Self::Error> {
+    if !(0..=100).contains(&value.0)
+      || !(0..=100).contains(&value.1)
+      || !(0..=100).contains(&value.2)
+      || !(0..=100).contains(&value.3)
+    {
+      Err(ColorError::ValueErr(format!(
+        "CMYK: args ({},{},{},{}) value error. all value must between 0~100",
+        value.0, value.1, value.2, value.3
+      )))
+    } else {
+      Ok(Self {
+        c: value.0,
+        m: value.1,
+        y: value.2,
+        k: value.3,
+      })
     }
+  }
 }
 
 impl From<Hex> for CMYK {
-    fn from(hex: Hex) -> Self {
-        let rgba: RGBA = hex.into();
-        rgba.into()
-    }
+  fn from(hex: Hex) -> Self {
+    let rgba: RGBA = hex.into();
+    rgba.into()
+  }
 }
 
 impl From<RGB> for CMYK {
-    fn from(rgb: RGB) -> Self {
-        let RGB { r, g, b } = rgb;
-        let (c, m, y, k) = rgb_to_cmyk(r, g, b);
-        Self { c, m, y, k }
-    }
+  fn from(rgb: RGB) -> Self {
+    let RGB { r, g, b } = rgb;
+    let (c, m, y, k) = rgb_to_cmyk(r, g, b);
+    Self { c, m, y, k }
+  }
 }
 
 impl From<RGBA> for CMYK {
-    fn from(rgba: RGBA) -> Self {
-        let RGBA { rgb, a } = rgba;
-        let RGB { r, g, b } = rgb;
-        let r1 = calc_rgb_with_alpha(r, a) as u8;
-        let g1 = calc_rgb_with_alpha(g, a) as u8;
-        let b1 = calc_rgb_with_alpha(b, a) as u8;
-        let (c, m, y, k) = rgb_to_cmyk(r1, g1, b1);
-        Self { c, m, y, k }
-    }
+  fn from(rgba: RGBA) -> Self {
+    let RGBA { rgb, a } = rgba;
+    let RGB { r, g, b } = rgb;
+    let r1 = calc_rgb_with_alpha(r, a) as u8;
+    let g1 = calc_rgb_with_alpha(g, a) as u8;
+    let b1 = calc_rgb_with_alpha(b, a) as u8;
+    let (c, m, y, k) = rgb_to_cmyk(r1, g1, b1);
+    Self { c, m, y, k }
+  }
 }
 
 impl From<HSL> for CMYK {
-    fn from(hsl: HSL) -> Self {
-        let rgb: RGB = hsl.into();
-        rgb.into()
-    }
+  fn from(hsl: HSL) -> Self {
+    let rgb: RGB = hsl.into();
+    rgb.into()
+  }
 }
 
 impl From<HSLA> for CMYK {
-    fn from(hsla: HSLA) -> Self {
-        let rgba: RGBA = hsla.into();
-        rgba.into()
-    }
+  fn from(hsla: HSLA) -> Self {
+    let rgba: RGBA = hsla.into();
+    rgba.into()
+  }
 }
 
 impl From<HSV> for CMYK {
-    fn from(hsv: HSV) -> Self {
-        let rgb: RGB = hsv.into();
-        rgb.into()
-    }
+  fn from(hsv: HSV) -> Self {
+    let rgb: RGB = hsv.into();
+    rgb.into()
+  }
 }
 
 impl Display for CMYK {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "cmyk({},{},{},{})", self.c, self.m, self.y, self.k)
-    }
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(f, "cmyk({},{},{},{})", self.c, self.m, self.y, self.k)
+  }
 }
+
 impl CMYK {
-    pub fn cyan(&self) -> u8 {
-        self.c
-    }
-    pub fn set_cyan(&mut self, cyan: u8) -> &mut Self {
-        self.c = cyan.min(100);
-        self
-    }
+  pub fn cyan(&self) -> u8 {
+    self.c
+  }
+  pub fn set_cyan(&mut self, cyan: u8) -> &mut Self {
+    self.c = cyan.min(100);
+    self
+  }
 
-    pub fn magenta(&self) -> u8 {
-        self.m
-    }
+  pub fn magenta(&self) -> u8 {
+    self.m
+  }
 
-    pub fn set_magenta(&mut self, magenta: u8) -> &mut Self {
-        self.m = magenta.min(100);
-        self
-    }
+  pub fn set_magenta(&mut self, magenta: u8) -> &mut Self {
+    self.m = magenta.min(100);
+    self
+  }
 
-    pub fn yellow(&self) -> u8 {
-        self.m
-    }
+  pub fn yellow(&self) -> u8 {
+    self.m
+  }
 
-    pub fn set_yellow(&mut self, yellow: u8) -> &mut Self {
-        self.y = yellow.min(100);
-        self
-    }
+  pub fn set_yellow(&mut self, yellow: u8) -> &mut Self {
+    self.y = yellow.min(100);
+    self
+  }
 
-    pub fn black(&self) -> u8 {
-        self.m
-    }
+  pub fn black(&self) -> u8 {
+    self.m
+  }
 
-    pub fn set_black(&mut self, black: u8) -> &mut Self {
-        self.m = black.min(100);
-        self
-    }
+  pub fn set_black(&mut self, black: u8) -> &mut Self {
+    self.m = black.min(100);
+    self
+  }
 
-    pub fn random() -> Self {
-        let mut rng = rand::thread_rng();
-        let c = rng.gen_range(0..=100) as u8;
-        let m = rng.gen_range(0..=100) as u8;
-        let y = rng.gen_range(0..=100) as u8;
-        let k = rng.gen_range(0..=100) as u8;
-        Self { c, m, y, k }
-    }
+// #[cfg(target_arch = "wasm32")]
+//   pub fn random() -> Self {
+//     let mut rng = rand::thread_rng();
+//     let c = rng.gen_range(0..=100) as u8;
+//     let m = rng.gen_range(0..=100) as u8;
+//     let y = rng.gen_range(0..=100) as u8;
+//     let k = rng.gen_range(0..=100) as u8;
+//     Self { c, m, y, k }
+//   }
 }
+
