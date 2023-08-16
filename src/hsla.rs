@@ -21,8 +21,8 @@ use std::ops::{Deref, DerefMut};
 /// ```
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
 pub struct HSLA {
-    pub(crate) hsl: HSL,
-    pub(crate) a: f32,
+    pub hsl: HSL,
+    pub a: f32,
 }
 
 impl TryFrom<&str> for HSLA {

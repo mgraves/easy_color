@@ -20,9 +20,9 @@ use std::fmt::{Display, Formatter};
 /// ```
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
 pub struct HSL {
-  pub(crate) h: u32,
-  pub(crate) s: u32,
-  pub(crate) l: u32,
+  pub h: u32,
+  pub s: u32,
+  pub l: u32,
 }
 
 impl TryFrom<&str> for HSL {

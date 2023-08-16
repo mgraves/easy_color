@@ -22,8 +22,8 @@ use std::ops::{Deref, DerefMut};
 /// ```
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
 pub struct RGBA {
-    pub(crate) rgb: RGB,
-    pub(crate) a: f32,
+    pub rgb: RGB,
+    pub a: f32,
 }
 
 impl TryFrom<&str> for RGBA {

@@ -23,9 +23,9 @@ use std::fmt::{Display, Formatter};
 /// ```
 #[derive(Debug, Default, PartialEq, Clone, Copy)]
 pub struct RGB {
-    pub(crate) r: u8,
-    pub(crate) g: u8,
-    pub(crate) b: u8,
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
 }
 
 impl TryFrom<&str> for RGB {
